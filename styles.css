@@ -1,0 +1,73 @@
+body {
+    /* background-color: black; */
+  }
+  
+  .flex {
+    display: flex;
+    width: min-content;
+  }
+  
+  .flex-row {
+    flex-direction: row;
+  }
+  .flex-col {
+    flex-direction: column;
+  }
+  
+  .floor {
+    border-bottom: 1px solid black;
+    padding-bottom: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .lift {
+    width: 50px;
+    height: 50px;
+    border: 1px solid black;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .door {
+    /* border: 1px solid black; */
+    width: 50%;
+    position: absolute;
+    background-color: bisque;
+    height: 100%;
+    transition: transform ease-in 2500ms;
+  }
+  .left-door {
+    left: 0;
+  }
+  
+  .left-door-movement {
+    transform: translateX(-20px);
+  }
+  
+  .right-door-movement {
+    transform: translateX(20px);
+  }
+  
+  .right-door {
+    right: 0;
+    background-color: coral;
+  }
+  
+  .ml {
+    margin-left: 2rem;
+  }
+  
+  .ml-2 {
+    margin-left: 4rem;
+  }
+  .ml-3 {
+    margin-left: 8rem;
+  }
+  
+  .ml-4 {
+    margin-left: 12rem;
+  }
+  .w-full {
+    width: 100%;
+  }
+  
