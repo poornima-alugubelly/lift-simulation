@@ -1,21 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Document</title>
-</head>
-<body>
-    <form class="flex flex-col" id="elevator-form">
-        <label for="num-of-lifts">Enter number of lifts</label>
-        <input type="number" id="num-of-lifts" name="num-of-lifts" />
-        <label for="num-of-floors">Enter number of floors</label>
-        <input type="number" id="num-of-floors" name="num-of-floors" />
-        <button id="submit-btn" type="submit">Submit</button>
-        </form>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <title>Lift Simulation</title>
+  </head>
+  <body>
+    <h1 class="text-center">Lift Simulation</h1>
+    <form class="flex flex-col gap-2" id="elevator-form">
+      <div>
+        <label for="num-of-lifts">Enter number of lifts:</label>
 
-        <div id="lift-system-container"></div>
-</body>
-<script src="index.js" type="module"></script>
+        <input type="number" id="num-of-lifts" name="num-of-lifts" />
+
+        <p id="max-lifts-msg" class="caption"></p>
+      </div>
+      <div>
+        <label for="num-of-floors">Enter number of floors:</label>
+        <input
+          type="number"
+          id="num-of-floors"
+          name="num-of-floors"
+        />
+      </div>
+      <button id="submit-btn" type="submit">Submit</button>
+    </form>
+
+    <div id="lift-system-container"></div>
+  </body>
+  <script src="index.js" type="module"></script>
 </html>

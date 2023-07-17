@@ -1,33 +1,54 @@
-import { createFloors } from "./utils.js";
+import { createFloors } from './utils.js';
+let windowWidth = window.innerWidth;
+const elevatorForm = document.getElementById('elevator-form');
+const liftSystemContainer = document.querySelector(
+  '#lift-system-container'
+);
+const numOfLiftsInputElem = document.getElementById('num-of-lifts');
+const submitBtn = document.getElementById('submit-btn');
+const maxLiftsMsg = document.getElementById('max-lifts-msg');
 
-const elevatorForm = document.getElementById(
-    "elevator-form"
-  );
-
-  let numOfLifts = 0;
-  let numOfFloors = 0
-
-  elevatorForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const formData = new FormData(elevatorForm);
-
-    for (let [name, value] of formData) {
-      if(name==="num-of-lifts"){
-        numOfLifts = value
-      }
-      if(name==="num-of-floors"){
-        numOfFloors=value;
-      }
-
+numOfLiftsInputElem.addEventListener('keyup', (e) => {
+  if (e.target.value > maxLifts) {
+    submitBtn.disabled = true;
+  } else {
+    if (submitBtn.disabled) {
+      submitBtn.disabled = false;
     }
+  }
+});
 
-const floorsContainer = document.querySelector('#lift-system-container');
+const onResize = () => {
+  windowWidth = window.innerWidth;
+  const maxLifts = Math.floor(windowWidth / 90);
+  maxLiftsMsg.innerText = `Max number of lifts allowed: ${maxLifts}`;
+  numOfLiftsInputElem.setAttribute('max', maxLifts);
+};
 
-if (floorsContainer) {
-  const floors = createFloors(numOfLifts, numOfFloors);
-  console.log(floors,"floors")
-  floors.forEach((floor) => floorsContainer.appendChild(floor));
-}
+onResize();
+window.addEventListener('resize', onResize);
 
+let numOfLifts = 0;
+let numOfFloors = 0;
 
-  });
+elevatorForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  while (liftSystemContainer.firstChild) {
+    liftSystemContainer.removeChild(liftSystemContainer.lastChild);
+  }
+  const formData = new FormData(elevatorForm);
+
+  for (let [name, value] of formData) {
+    if (name === 'num-of-lifts') {
+      numOfLifts = value;
+    }
+    if (name === 'num-of-floors') {
+      numOfFloors = value;
+    }
+  }
+
+  if (liftSystemContainer) {
+    const floors = createFloors(numOfFloors, numOfLifts);
+    floors.forEach((floor) => liftSystemContainer.appendChild(floor));
+  }
+});

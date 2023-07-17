@@ -1,10 +1,11 @@
+const elevatorBtn = import('./assets/elevator-btn.svg');
 export const createCustomElement = ({
   elementType,
   classes,
   id,
   textContent,
   eventListener,
-  eventType = "click",
+  eventType = 'click',
   eventParams,
 }) => {
   const element = document.createElement(elementType);
@@ -25,7 +26,9 @@ export const createCustomElement = ({
     element.id = id;
   }
   if (eventListener) {
-    element.addEventListener(eventType, () => eventListener(...eventParams));
+    element.addEventListener(eventType, () =>
+      eventListener(...eventParams)
+    );
   }
 
   return element;
@@ -33,8 +36,8 @@ export const createCustomElement = ({
 
 export const createFloor = () => {
   return createCustomElement({
-    elementType: "div",
-    classes: ["flex", "w-full", "floor"],
+    elementType: 'div',
+    classes: ['flex', 'w-full', 'floor'],
   });
 };
 
@@ -46,19 +49,19 @@ const createLifts = (liftIndex) => {
   const liftId = `lift-${liftIndex}`;
 
   const lift = createCustomElement({
-    elementType: "div",
-    classes: ["lift", "ml"],
+    elementType: 'div',
+    classes: ['lift', 'ml'],
     id: liftId,
   });
 
   const leftDoor = createCustomElement({
-    elementType: "div",
-    classes: ["door", "left-door"],
+    elementType: 'div',
+    classes: ['door', 'left-door'],
   });
 
   const rightDoor = createCustomElement({
-    elementType: "div",
-    classes: ["door", "right-door"],
+    elementType: 'div',
+    classes: ['door', 'right-door'],
   });
 
   lift.append(leftDoor, rightDoor);
@@ -74,9 +77,9 @@ const moveLift = (closestLift, floorNumber, leastDistance) => {
   const lift = document.getElementById(`lift-${closestLift.id}`);
 
   if (lift) {
-    const leftDoor = lift.querySelector(".left-door");
-    const rightDoor = lift.querySelector(".right-door");
-    const translateVal = -floorNumber * 80;
+    const leftDoor = lift.querySelector('.left-door');
+    const rightDoor = lift.querySelector('.right-door');
+    const translateVal = -floorNumber * 100 - floorNumber;
     const transitionDuration = leastDistance * 2;
 
     const liftFreeAfter = transitionDuration * 1000 + 5000;
@@ -101,7 +104,7 @@ const moveLift = (closestLift, floorNumber, leastDistance) => {
 
     lift.style.transform = `translateY(${translateVal}px)`;
 
-    lift.style.transition = `all ${transitionDuration}s`;
+    lift.style.transition = `transform linear ${transitionDuration}s`;
   }
   closestLift.target = floorNumber;
   closestLift.position = floorNumber;
@@ -116,7 +119,9 @@ const onFloorBtnClick = (floorNumber) => {
 
   liftSystemState.forEach((elevator) => {
     const isElevatorMoving = elevator.isMoving;
-    let distanceFromPressedFloor = Math.abs(floorNumber - elevator.position);
+    let distanceFromPressedFloor = Math.abs(
+      floorNumber - elevator.position
+    );
 
     if (isElevatorMoving) {
       if (leastDistanceMoving > distanceFromPressedFloor)
@@ -157,25 +162,25 @@ export const createFloors = (numFloors, numLifts) => {
 
   for (let i = 0; i < numFloors; i++) {
     const floor = createCustomElement({
-      elementType: "div",
-      classes: ["flex", "w-full", "floor"],
+      elementType: 'div',
+      classes: ['flex', 'w-full', 'floor'],
     });
 
     const floorBtn = createCustomElement({
-      elementType: "div",
-      classes: ["flex", "flex-col", "floor-btn"],
+      elementType: 'div',
+      classes: ['flex', 'flex-col', 'floor-btn'],
       eventListener: onFloorBtnClick,
       eventParams: [numFloors - i - 1],
     });
 
-    const button = createCustomElement({
-      elementType: "button",
-      textContent: "Up",
-    });
+    const button = document.createElement('img');
+    button.src = './assets/elevator-btn.png';
+    button.style.width = '32px';
+    button.style.height = '32px';
 
     const liftContainer = createCustomElement({
-      elementType: "div",
-      classes: ["w-full", "flex"],
+      elementType: 'div',
+      classes: ['w-full', 'flex'],
     });
 
     floorBtn.appendChild(button);
