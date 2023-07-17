@@ -70,34 +70,25 @@ const createLifts = (liftIndex) => {
 
 const liftSystemState = [];
 
-const onFloorBtnClick = (floorNumber) => {
-  let closestFloor = liftSystemState[0];
-  let leastDistance = 10000;
-  liftSystemState.forEach((elevator) => {
-    const isElevatorMoving = elevator.isMoving;
-    let distanceFromPressedFloor = Math.abs(floorNumber - elevator.position);
-    if (isElevatorMoving) {
-      return;
-    }
-
-    if (leastDistance > distanceFromPressedFloor) {
-      closestFloor = elevator;
-      leastDistance = distanceFromPressedFloor;
-    }
-  });
-
-  const lift = document.getElementById(`lift-${closestFloor.id}`);
+const moveLift = (closestLift, floorNumber, leastDistance) => {
+  const lift = document.getElementById(`lift-${closestLift.id}`);
 
   if (lift) {
     const leftDoor = lift.querySelector(".left-door");
     const rightDoor = lift.querySelector(".right-door");
-    const translateVal = -floorNumber * 100;
+    const translateVal = -floorNumber * 80;
     const transitionDuration = leastDistance * 2;
 
     const liftFreeAfter = transitionDuration * 1000 + 5000;
-    closestFloor.isMoving = true;
+
+    closestLift.isMoving = true;
+    // liftSystemState[closestLift.id] = closestLift
     const liftOpenDuration = transitionDuration * 1000;
-    console.log(floorNumber);
+
+    setTimeout(() => {
+      closestLift.isMoving = false;
+    }, liftFreeAfter);
+
     setTimeout(() => {
       if (leftDoor) leftDoor.style.transform = `translateX(-25px)`;
       if (rightDoor) rightDoor.style.transform = `translateX(25px)`;
@@ -108,15 +99,56 @@ const onFloorBtnClick = (floorNumber) => {
       if (rightDoor) rightDoor.style.transform = `translateX(-0px)`;
     }, liftOpenDuration + 2500);
 
-    setTimeout(() => {
-      closestFloor.isMoving = false;
-    }, liftFreeAfter);
     lift.style.transform = `translateY(${translateVal}px)`;
 
     lift.style.transition = `all ${transitionDuration}s`;
   }
-  closestFloor.target = floorNumber;
-  closestFloor.position = floorNumber;
+  closestLift.target = floorNumber;
+  closestLift.position = floorNumber;
+};
+
+const onFloorBtnClick = (floorNumber) => {
+  let closestLift = null;
+  let closestLiftMoving = null;
+  let leastDistance = 10000;
+  let leastDistanceMoving = 10000;
+  let delayedLifts = [];
+
+  liftSystemState.forEach((elevator) => {
+    const isElevatorMoving = elevator.isMoving;
+    let distanceFromPressedFloor = Math.abs(floorNumber - elevator.position);
+
+    if (isElevatorMoving) {
+      if (leastDistanceMoving > distanceFromPressedFloor)
+        closestLiftMoving = elevator;
+      leastDistanceMoving = distanceFromPressedFloor;
+    } else {
+      if (leastDistance > distanceFromPressedFloor) {
+        closestLift = elevator;
+        leastDistance = distanceFromPressedFloor;
+      }
+    }
+  });
+
+  if (!closestLift) {
+    closestLift = closestLiftMoving;
+    leastDistance = leastDistanceMoving;
+    delayedLifts.push({
+      ...closestLift,
+      leastDistance,
+    });
+  }
+
+  if (delayedLifts.length > 0) {
+    delayedLifts.forEach((delayedLift, index) => {
+      setTimeout(() => {
+        moveLift(delayedLift, floorNumber, leastDistance);
+      }, delayedLift.leastDistance * 1000 + 5000);
+    });
+    delayedLifts = [];
+  } else {
+    moveLift(closestLift, floorNumber, leastDistance);
+  }
 };
 
 // Function to create dynamic floors
