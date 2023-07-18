@@ -123,7 +123,7 @@ export const createFloors = (numFloors, numLifts) => {
 
 // <---- Lift system logic starts ---->
 
-const liftSystemState = [];
+let liftSystemState = [];
 let delayedLifts = [];
 
 const isAnyLiftFree = () => {
@@ -206,3 +206,8 @@ export const onFloorBtnClick = (floorNumber) => {
 };
 
 // <---- Lift system logic ends ---->
+
+export const reset = () => {
+  liftSystemState = [];
+  delayedLifts = [];
+};

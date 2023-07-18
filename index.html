@@ -21,8 +21,11 @@
   </head>
   <body>
     <h1 class="text-center">Lift Simulation</h1>
+    <button>
+      <img src="./assets/back-arrow.svg" id="back-btn" />
+    </button>
     <form class="flex flex-col gap-2" id="elevator-form">
-      <div>
+      <div class="w-full">
         <label for="num-of-lifts">Enter number of lifts:</label>
 
         <input
@@ -34,7 +37,7 @@
 
         <p id="max-lifts-msg" class="caption"></p>
       </div>
-      <div>
+      <div class="w-full">
         <label for="num-of-floors">Enter number of floors:</label>
         <input
           type="number"

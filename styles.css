@@ -1,6 +1,16 @@
 :root {
   --primary-blue: #8bd5ef;
 }
+
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
 body {
   font-family: 'Montserrat', sans-serif;
 }
@@ -105,8 +115,10 @@ button {
 
 input {
   border: 1px solid #e2e8f0;
-  padding: 4px 8px;
+  padding: 8px 12px;
   border-radius: 0.375rem;
+  margin-top: 6px;
+  width: 100%;
 }
 
 #elevator-form {
@@ -119,10 +131,16 @@ input {
 
 #submit-btn {
   background-color: var(--primary-blue);
-  padding: 4px 8px;
+  padding: 6px 8px;
   border-radius: 1rem;
   margin-top: 0.675rem;
   border: 1px solid;
+}
+
+#back-btn {
+  width: 48px;
+  height: 48px;
+  display: none;
 }
 
 @media (max-width: 350px) {

@@ -1,4 +1,4 @@
-import { createFloors } from './utils.js';
+import { createFloors, reset } from './utils.js';
 let windowWidth = window.innerWidth;
 const elevatorForm = document.getElementById('elevator-form');
 const liftSystemContainer = document.querySelector(
@@ -7,6 +7,7 @@ const liftSystemContainer = document.querySelector(
 const numOfLiftsInputElem = document.getElementById('num-of-lifts');
 const submitBtn = document.getElementById('submit-btn');
 const maxLiftsMsg = document.getElementById('max-lifts-msg');
+const backBtn = document.getElementById('back-btn');
 
 numOfLiftsInputElem.addEventListener('keyup', (e) => {
   if (e.target.value > maxLifts) {
@@ -33,9 +34,7 @@ let numOfFloors = 0;
 
 elevatorForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  while (liftSystemContainer.firstChild) {
-    liftSystemContainer.removeChild(liftSystemContainer.lastChild);
-  }
+
   const formData = new FormData(elevatorForm);
 
   for (let [name, value] of formData) {
@@ -51,4 +50,15 @@ elevatorForm.addEventListener('submit', (e) => {
     const floors = createFloors(numOfFloors, numOfLifts);
     floors.forEach((floor) => liftSystemContainer.appendChild(floor));
   }
+  backBtn.style.display = 'block';
+  elevatorForm.style.display = 'none';
+});
+
+backBtn.addEventListener('click', () => {
+  elevatorForm.style.display = 'block';
+  while (liftSystemContainer.firstChild) {
+    liftSystemContainer.removeChild(liftSystemContainer.lastChild);
+    reset();
+  }
+  backBtn.style.display = 'none';
 });
