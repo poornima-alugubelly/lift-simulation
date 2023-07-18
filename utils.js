@@ -34,13 +34,6 @@ export const createCustomElement = ({
   return element;
 };
 
-export const createFloor = () => {
-  return createCustomElement({
-    elementType: 'div',
-    classes: ['flex', 'w-full', 'floor'],
-  });
-};
-
 // Function to create dynamic lifts
 const createLifts = (liftIndex) => {
   const lifts = [];
@@ -85,17 +78,23 @@ export const createFloors = (numFloors, numLifts) => {
       eventParams: [numFloors - i - 1],
     });
 
-    const button = document.createElement('img');
-    button.src = './assets/elevator-btn.png';
-    button.style.width = '32px';
-    button.style.height = '32px';
+    const floorIndicator = createCustomElement({
+      elementType: 'span',
+      classes: ['floor-indicator'],
+      textContent: `Floor: ${numFloors - i}`,
+    });
+
+    const buttonImg = document.createElement('img');
+    buttonImg.src = './assets/elevator-btn.png';
+    buttonImg.style.width = '32px';
+    buttonImg.style.height = '32px';
 
     const liftContainer = createCustomElement({
       elementType: 'div',
       classes: ['w-full', 'flex'],
     });
 
-    floorBtn.appendChild(button);
+    floorBtn.appendChild(buttonImg);
     if (i === numFloors - 1) {
       const initState = {
         id: null,
@@ -113,6 +112,7 @@ export const createFloors = (numFloors, numLifts) => {
 
     floor.appendChild(floorBtn);
     floor.appendChild(liftContainer);
+    floor.appendChild(floorIndicator);
     floors.push(floor);
   }
 
@@ -161,7 +161,7 @@ const moveLift = (floorNumber) => {
   if (lift) {
     const leftDoor = lift.querySelector('.left-door');
     const rightDoor = lift.querySelector('.right-door');
-    const translateVal = -floorNumber * 100 - floorNumber;
+    const translateVal = -floorNumber * 120;
     const transitionDuration = leastDistance * 2;
 
     const liftFreeAfter = transitionDuration * 1000 + 5000;
